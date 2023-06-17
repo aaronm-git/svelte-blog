@@ -7,8 +7,8 @@
 	let { posts } = data;
 	$: ({ posts } = data);
 
-	const pinnedPosts = posts?.filter((post) => post.pinned) || [];
-	const recentPosts = posts?.filter((post) => !post.pinned).sort((a, b) => b.created_at - a.created_at) || [];
+	const pinnedPosts = posts?.filter((post) => post.isPinned) || [];
+	const recentPosts = posts?.filter((post) => !post.isPinned).sort((a, b) => b.created_at - a.created_at) || [];
 </script>
 
 <div>
@@ -17,7 +17,7 @@
 		<div class="posts">
 			<h1 class="content-subhead">Pinned Post</h1>
 			{#each pinnedPosts as post}
-				<Post {post} />
+				<Post {...post} />
 			{/each}
 		</div>
 	{/if}
@@ -26,7 +26,7 @@
 		<div class="posts">
 			<h1 class="content-subhead">Recent Posts</h1>
 			{#each recentPosts as post}
-				<Post {post} />
+				<Post {...post} />
 			{/each}
 		</div>
 	{/if}
