@@ -1,5 +1,7 @@
 import { STRAPI_KEY } from '$env/static/private';
 import { PUBLIC_STRAPI_URL as baseUrl } from '$env/static/public';
+import { MAX_TRUNCATE_TEXT_LENGTH } from '$lib/constants/posts';
+console.log('MAX_TRUNCATE_TEXT_LENGTH:', MAX_TRUNCATE_TEXT_LENGTH);
 import axios from 'axios';
 const bearer = `Bearer ${STRAPI_KEY}`;
 class StrapiAPI {
@@ -56,7 +58,7 @@ class StrapiAPI {
 
 export const strapi = new StrapiAPI();
 
-function truncateText(text, maxLength = 300) {
+function truncateText(text, maxLength = MAX_TRUNCATE_TEXT_LENGTH) {
 	if (text.length <= maxLength) {
 		return text;
 	}

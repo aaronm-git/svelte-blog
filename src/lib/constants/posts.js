@@ -1,0 +1,1 @@
+export const MAX_TRUNCATE_TEXT_LENGTH = 250;
