@@ -1,6 +1,15 @@
 <script>
 	export let category;
-	console.log(category);
+	import { textColorByBackground } from '$lib/utils/color.js';
+	const bgColor = category.color || null;
+	const textColor = bgColor && textColorByBackground(bgColor);
 </script>
 
-<a href={category.url} class="post-category post-category-{category.name.toLowerCase().replace(' ', '-')}">{category.name}</a>
+<a href={`/categories/${category.slug}`} class="post-category {bgColor && 'custom-color'}" style={bgColor && `--color-bg: ${bgColor}; --color: ${textColor}`}>{category.name}</a>
+
+<style>
+	.post-category .custom-color {
+		color: var(--color);
+		background-color: var(--color-bg);
+	}
+</style>

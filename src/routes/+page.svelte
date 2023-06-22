@@ -1,6 +1,5 @@
 <script>
 	import Footer from '$lib/components/Footer.svelte';
-	import ImagePost from '$lib/components/ImagePost.svelte';
 	import Post from '$lib/components/Post.svelte';
 
 	export let data;
