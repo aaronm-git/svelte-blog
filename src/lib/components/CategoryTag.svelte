@@ -8,7 +8,7 @@
 <a href={`/categories/${category.slug}`} class="post-category {bgColor && 'custom-color'}" style={bgColor && `--color-bg: ${bgColor}; --color: ${textColor}`}>{category.name}</a>
 
 <style>
-	.post-category .custom-color {
+	.post-category.custom-color {
 		color: var(--color);
 		background-color: var(--color-bg);
 	}

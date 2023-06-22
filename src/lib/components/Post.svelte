@@ -5,7 +5,7 @@
 	export let title = '';
 	export let author = '';
 	export let categories = [];
-	export let description = ''
+	export let description = '';
 	export let publishedAt = '';
 </script>
 
@@ -14,8 +14,9 @@
 		<h2 class="post-title">{title}</h2>
 		<img alt="{author.name}'s avatar" class="post-avatar" src={author.imageUrl} width="48" height="48" />
 		<p class="post-meta">
-			Published on <time class="post-date" datetime="{new Date(publishedAt)}">{new Date(publishedAt).toLocaleDateString()}</time>,
-			by <a href={`/authors/${author.slug}`} class="post-author">{author.name}</a> under
+			Published on <time class="post-date" datetime={new Date(publishedAt)}>{new Date(publishedAt).toLocaleDateString()}</time>, by
+			<a href={`/authors/${author.slug}`} class="post-author">{author.name}</a>
+			under
 
 			{#each categories as category}
 				<CategoryTag {category} />
