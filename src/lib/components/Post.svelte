@@ -1,11 +1,11 @@
 <script>
 	import CategoryTag from '$lib/components/CategoryTag.svelte';
-
+	import { truncateText } from '$lib/utils/string.js';
 	export let id = '';
 	export let title = '';
 	export let author = '';
 	export let categories = [];
-	export let description = '';
+	export let text = '';
 	export let publishedAt = '';
 </script>
 
@@ -25,7 +25,7 @@
 	</header>
 	<div class="post-description">
 		<p>
-			{description}
+			{truncateText(text)}
 		</p>
 		<a href="/posts/{id}">Read more &gt;</a>
 	</div>
