@@ -1,4 +1,4 @@
-import { strapi } from '$lib/utils/strapi';
+import { postsApi } from '$lib/utils/posts';
 import { error } from '@sveltejs/kit';
 export async function load(context) {
 	const year = context.params.year;
@@ -9,7 +9,7 @@ export async function load(context) {
 			code: 'NOT_FOUND'
 		});
 	}
-	const posts = await strapi.getPostsByYearMonth(year, month);
+	const posts = await postsApi.getPostsByYearMonth(year, month);
 	return {
 		props: { posts }
 	};

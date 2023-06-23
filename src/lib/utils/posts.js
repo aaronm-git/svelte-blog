@@ -3,7 +3,7 @@ import { PUBLIC_STRAPI_URL as baseUrl } from '$env/static/public';
 import axios from 'axios';
 const bearer = `Bearer ${STRAPI_KEY}`;
 import dayjs from 'dayjs';
-class StrapiAPI {
+class PostsApi {
 	constructor() {
 		this.baseUrl = baseUrl;
 	}
@@ -103,7 +103,7 @@ class StrapiAPI {
 	}
 }
 
-export const strapi = new StrapiAPI();
+export const postsApi = new PostsApi();
 
 function formatPost(posts) {
 	return (
@@ -113,6 +113,7 @@ function formatPost(posts) {
 				slug: post.attributes.slug,
 				title: post.attributes.title,
 				text: post.attributes.text,
+				previewText: post.attributes.previewText,
 				isPinned: post.attributes.isPinned,
 				categories: getCatagories(post.attributes.categories.data),
 				createdAt: post.attributes.createdAt,

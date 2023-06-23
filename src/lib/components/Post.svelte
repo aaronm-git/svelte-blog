@@ -2,6 +2,7 @@
 	import CategoryTag from '$lib/components/CategoryTag.svelte';
 	import dayjs from 'dayjs';
 	import { truncateText } from '$lib/utils/string.js';
+	import showdown from 'showdown';
 	export let id = '';
 	export let slug = '';
 	export let title = '';
@@ -9,6 +10,14 @@
 	export let categories = [];
 	export let text = '';
 	export let publishedAt = '';
+	export let previewText = '';
+
+	const sanitizeText = (text) => {
+		const converter = new showdown.Converter();
+		const html = converter.makeHtml(text);
+		const sanitizedHtml = DOMPurify.sanitize(html);
+		return sanitizedHtml;
+	};
 
 	const year = dayjs(publishedAt).format('YYYY');
 	const month = dayjs(publishedAt).format('MM');
@@ -30,7 +39,7 @@
 	</header>
 	<div class="post-description">
 		<p>
-			{truncateText(text)}
+			{truncateText(previewText)}
 		</p>
 		<a href="/posts/{year}/{month}/{slug}">Read more &gt;</a>
 	</div>

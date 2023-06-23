@@ -1,7 +1,7 @@
 import { posts as mockPosts } from '$lib/mock/posts.js';
-import { strapi } from '$lib/utils/strapi.js';
+import { postsApi } from '$lib/utils/posts';
 export async function load() {
-	const posts = await strapi.getPosts();
+	const posts = await postsApi.getPosts();
 	return {
 		// posts: [...mockPosts, ...posts]
 		posts: posts
