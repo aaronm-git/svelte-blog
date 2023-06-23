@@ -7,7 +7,11 @@
 
 <div>
 	<h1>{$page.status}</h1>
-	<p>{errorMessage}</p>
+	{#if errorMessage}
+		<p>{errorMessage}</p>
+	{:else}
+		<p>😵 Something went wrong.</p>
+	{/if}
 	<a href="/" class="pure-button">Back to Home</a>
 </div>
 
@@ -30,6 +34,6 @@
 
 	a {
 		margin-top: 1rem;
-        text-decoration: none;
+		text-decoration: none;
 	}
 </style>

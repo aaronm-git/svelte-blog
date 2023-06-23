@@ -1,6 +1,6 @@
 <script>
 	import Footer from '$lib/components/Footer.svelte';
-	import Post from '$lib/components/Post.svelte';
+	import Posts from '$lib/components/Posts.svelte';
 
 	export let data;
 	let { posts } = data;
@@ -12,23 +12,8 @@
 
 <div>
 	<!-- A wrapper for all the blog posts -->
-	{#if pinnedPosts.length > 0}
-		<div class="posts">
-			<h1 class="content-subhead">Pinned Post</h1>
-			{#each pinnedPosts as post}
-				<Post {...post} />
-			{/each}
-		</div>
-	{/if}
-
-	{#if recentPosts.length > 0}
-		<div class="posts">
-			<h1 class="content-subhead">Recent Posts</h1>
-			{#each recentPosts as post}
-				<Post {...post} />
-			{/each}
-		</div>
-	{/if}
+	<Posts {posts} subhead="Pinned Posts" />
+	<Posts {posts} subhead="Recent Posts" />
 	<!-- <ImagePost /> -->
 	<Footer />
 </div>

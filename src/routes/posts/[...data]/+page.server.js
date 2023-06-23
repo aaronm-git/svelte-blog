@@ -11,7 +11,7 @@ export async function load(context) {
 		});
 	}
 
-	const post = await strapi.getPostByParams({ year, month, slug });
+	const post = await strapi.getPostByYearMonthSlug({ year, month, slug });
 
 	if (!post) {
 		throw error(404, {

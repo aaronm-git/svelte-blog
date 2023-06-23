@@ -1,8 +1,12 @@
 <script>
 	import { page } from '$app/stores';
+	import dayjs from 'dayjs';
+	import Posts from '$lib/components/Posts.svelte';
 	const year = $page.params.year;
 	const month = $page.params.month;
+	const dateFormat = dayjs(`${year}-${month}-01`).format('MMMM YYYY');
+	export let data;
+	const { posts } = data.props;
 </script>
 
-<h1>{year}</h1>
-<h1>{month}</h1>
+<Posts {posts} subhead="Posts from {dateFormat}" />

@@ -1,12 +1,17 @@
 <script>
 	import CategoryTag from '$lib/components/CategoryTag.svelte';
+	import dayjs from 'dayjs';
 	import { truncateText } from '$lib/utils/string.js';
 	export let id = '';
+	export let slug = '';
 	export let title = '';
 	export let author = '';
 	export let categories = [];
 	export let text = '';
 	export let publishedAt = '';
+
+	const year = dayjs(publishedAt).format('YYYY');
+	const month = dayjs(publishedAt).format('MM');
 </script>
 
 <section class="post">
@@ -27,6 +32,6 @@
 		<p>
 			{truncateText(text)}
 		</p>
-		<a href="/posts/{id}">Read more &gt;</a>
+		<a href="/posts/{year}/{month}/{slug}">Read more &gt;</a>
 	</div>
 </section>

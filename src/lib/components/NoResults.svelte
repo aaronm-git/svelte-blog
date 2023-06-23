@@ -1,15 +1,9 @@
-<div class="no-results">
-	<p>There are no results.</p>
-</div>
+<p>🫥 There are no posts here.</p>
 
 <style>
-	div.no-results {
-		display: flex;
-		justify-content: center;
-		height: calc(100vh - 100px);
-	}
-	div.no-results p {
+	p {
 		margin-top: 25%;
+		text-align: center;
 		font-size: 1.5rem;
 		color: grey;
 	}

@@ -2,6 +2,7 @@ import { STRAPI_KEY } from '$env/static/private';
 import { PUBLIC_STRAPI_URL as baseUrl } from '$env/static/public';
 import axios from 'axios';
 const bearer = `Bearer ${STRAPI_KEY}`;
+import dayjs from 'dayjs';
 class StrapiAPI {
 	constructor() {
 		this.baseUrl = baseUrl;
@@ -44,9 +45,46 @@ class StrapiAPI {
 		if (!year) {
 			throw new Error('A year must be provided');
 		}
-		const posts = await this.#execFetch(`posts?filters[publishedAt][$gte]=${year}-01-01T00:00:00Z&filters[publishedAt][$lt]=${Number(year) + 1}-01-01T00:00:00Z&populate=*`);
+		const startISO = dayjs(`${year}-01-01`).toISOString();
+		const endISO = dayjs(`${Number(year) + 1}-01-01`).toISOString();
+		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
+	}
+
+	async getPostsByYearMonth(year, month) {
+		const startISO = dayjs(`${year}-${month}-01`).toISOString();
+		const endISO = (function () {
+			if (Number(month) === 12) {
+				return dayjs(`${Number(year) + 1}-01`).toISOString();
+			}
+			return dayjs(`${year}-${Number(month) + 1}-01`).toISOString();
+		})();
+		if (!year || !month) {
+			throw new Error('A year and month must be provided');
+		}
+		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const posts = await this.#execFetch(query);
+		const formattedPosts = formatPost(posts);
+		return formattedPosts;
+	}
+
+	async getPostByYearMonthSlug({ year, month, slug }) {
+		const startISO = dayjs(`${year}-${month}-01`).toISOString();
+		const endISO = (function () {
+			if (Number(month) === 12) {
+				return dayjs(`${Number(year) + 1}-01`).toISOString();
+			}
+			return dayjs(`${year}-${Number(month) + 1}-01`).toISOString();
+		})();
+		if (!year || !month || !slug) {
+			throw new Error('A year, month, and slug must be provided');
+		}
+		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&filters[slug][$eq]=${slug}&populate=*`;
+		const posts = await this.#execFetch(query);
+		const formattedPosts = formatPost(posts);
+		return formattedPosts[0];
 	}
 
 	#execFetch(path) {
