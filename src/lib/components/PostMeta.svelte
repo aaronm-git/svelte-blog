@@ -7,7 +7,7 @@
 	<h1 class="content-subhead">Post Meta</h1>
 	<ul class="list">
 		<li>Author: <a href="/authors/{post.author.slug}">{post.author.name}</a></li>
-		<li>Published: {`${new Date(post.publishedAt).toDateString()} at ${new Date(post.publishedAt).toLocaleTimeString()}qqqq`}</li>
+		<li>Published: {`${new Date(post.publishedAt).toDateString()} at ${new Date(post.publishedAt).toLocaleTimeString()}`}</li>
 		<li>Last Updated: {`${new Date(post.updatedAt).toDateString()} at ${new Date(post.updatedAt).toLocaleTimeString()}`}</li>
 		<li>
 			Categories:
