@@ -33,7 +33,6 @@ class PostsApi {
 	async getPostByParams({ year, month, slug }) {
 		const query = `filters[slug][$eq]=${slug}`;
 		const posts = await this.#execFetch(`posts?${query}&populate=*`);
-		console.log('posts', posts);
 		if (!posts || posts.length === 0) {
 			return null;
 		}
