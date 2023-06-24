@@ -15,8 +15,8 @@
     <meta name="description" content={truncateText(post.text, 75)} />
 </svelte:head>
 
+<h1>{post.title}</h1>
+
 {@html html}
 
 <PostMeta {post} />
-
-

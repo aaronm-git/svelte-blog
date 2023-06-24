@@ -8,7 +8,7 @@
 				<li class="nav-item">
 					<a class="pure-button" href="/">Home</a>
 					<a class="pure-button" href="/login">Login</a>
-					<a disabled class="pure-button" href="http://purecss.io">Pure</a>
+					<a class="pure-button" href="http://purecss.io" target="_blank">Pure</a>
 				</li>
 			</ul>
 		</nav>
