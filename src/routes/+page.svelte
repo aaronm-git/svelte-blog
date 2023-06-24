@@ -12,8 +12,8 @@
 
 <div>
 	<!-- A wrapper for all the blog posts -->
-	<Posts {posts} subhead="Pinned Posts" />
-	<Posts {posts} subhead="Recent Posts" />
+	<Posts posts={pinnedPosts} subhead="Pinned Posts" />
+	<Posts posts={recentPosts} subhead="Recent Posts" />
 	<!-- <ImagePost /> -->
 	<Footer />
 </div>

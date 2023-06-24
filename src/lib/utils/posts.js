@@ -87,6 +87,17 @@ class PostsApi {
 		return formattedPosts[0];
 	}
 
+	async getPostsByCategory(category) {
+		if (!category) {
+			throw new Error('A category must be provided');
+		}
+		const categoryName = category.toLowerCase();
+		const query = `posts?populate=*&filters[categories][slug][$eq]=${categoryName}`;
+		const posts = await this.#execFetch(query);
+		const formattedPosts = formatPost(posts);
+		return formattedPosts;
+	}
+
 	#execFetch(path) {
 		return axios
 			.get(`${this.baseUrl}/${path}`, {
