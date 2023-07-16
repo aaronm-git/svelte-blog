@@ -4,6 +4,6 @@ export async function load() {
 	const posts = await postsApi.getPosts();
 	return {
 		// posts: [...mockPosts, ...posts]
-		posts: posts
+		props: { posts }
 	};
 }

@@ -9,7 +9,7 @@ class PostsApi {
 	}
 
 	async getPosts(page = 1, pageSize = 25) {
-		const posts = await this.#execFetch(`posts?populate=*`);
+		const posts = await this.#execFetch(`/api/posts?populate=*`);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
 	}
@@ -22,7 +22,7 @@ class PostsApi {
 	}
 
 	async getPostBySlug(slug) {
-		const posts = await this.#execFetch(`posts?filters[slug][$eq]=${slug}&populate=*`);
+		const posts = await this.#execFetch(`/api/posts?filters[slug][$eq]=${slug}&populate=*`);
 		if (!posts || posts.length === 0) {
 			return null;
 		}
@@ -32,7 +32,7 @@ class PostsApi {
 
 	async getPostByParams({ year, month, slug }) {
 		const query = `filters[slug][$eq]=${slug}`;
-		const posts = await this.#execFetch(`posts?${query}&populate=*`);
+		const posts = await this.#execFetch(`/api/posts?${query}&populate=*`);
 		if (!posts || posts.length === 0) {
 			return null;
 		}
@@ -46,7 +46,7 @@ class PostsApi {
 		}
 		const startISO = dayjs(`${year}-01-01`).toISOString();
 		const endISO = dayjs(`${Number(year) + 1}-01-01`).toISOString();
-		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -63,7 +63,7 @@ class PostsApi {
 		if (!year || !month) {
 			throw new Error('A year and month must be provided');
 		}
-		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -80,7 +80,7 @@ class PostsApi {
 		if (!year || !month || !slug) {
 			throw new Error('A year, month, and slug must be provided');
 		}
-		const query = `posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&filters[slug][$eq]=${slug}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&filters[slug][$eq]=${slug}&populate=*`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts[0];
@@ -91,7 +91,17 @@ class PostsApi {
 			throw new Error('A category must be provided');
 		}
 		const categoryName = category.toLowerCase();
-		const query = `posts?populate=*&filters[categories][slug][$eq]=${categoryName}`;
+		const query = `/api/posts?populate=*&filters[categories][slug][$eq]=${categoryName}`;
+		const posts = await this.#execFetch(query);
+		const formattedPosts = formatPost(posts);
+		return formattedPosts;
+	}
+
+	async getPostsByAuthorId(authorId) {
+		if (!authorId) {
+			throw new Error('An author id must be provided');
+		}
+		const query = `/api/posts?populate=*&filters[author][id][$eq]=${authorId}`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -99,7 +109,7 @@ class PostsApi {
 
 	#execFetch(path) {
 		return axios
-			.get(`${this.baseUrl}/${path}`, {
+			.get(`${this.baseUrl}${path}`, {
 				headers: {
 					Authorization: bearer
 				}
@@ -113,30 +123,28 @@ class PostsApi {
 	}
 }
 
-export const postsApi = new PostsApi();
-
 function formatPost(posts) {
-	return (
-		posts.data.map((post) => {
-			return {
-				id: post.id,
-				slug: post.attributes.slug,
-				title: post.attributes.title,
-				text: post.attributes.text,
-				previewText: post.attributes.previewText,
-				isPinned: post.attributes.isPinned,
-				categories: getCatagories(post.attributes.categories.data),
-				createdAt: post.attributes.createdAt,
-				updatedAt: post.attributes.updatedAt,
-				publishedAt: post.attributes.publishedAt,
-				author: {
-					name: post.attributes.author?.data.attributes.firstname + ' ' + post.attributes.author?.data.attributes.lastname,
-					imageUrl: post.attributes.author?.data.attributes.imageUrl || `https://i.pravatar.cc/48?id=${post.attributes.author?.id}`,
-					slug: post.attributes.author?.data.attributes.slug
-				}
-			};
-		}) || []
-	);
+	return posts.data.map((post) => {
+		return {
+			id: post.id,
+			slug: post.attributes.slug,
+			title: post.attributes.title,
+			text: post.attributes.text,
+			previewText: post.attributes.previewText,
+			isPinned: post.attributes.isPinned,
+			categories: getCatagories(post.attributes.categories.data),
+			createdAt: post.attributes.createdAt,
+			updatedAt: post.attributes.updatedAt,
+			publishedAt: post.attributes.publishedAt,
+			author: {
+				id: post.attributes.author?.data.id,
+				name: post.attributes.author?.data.attributes.firstname + ' ' + post.attributes.author?.data.attributes.lastname,
+				imageUrl: `https://i.pravatar.cc/48?id=${post.attributes.author?.data.id}`,
+				// imageUrl: post.attributes.author?.data.attributes?.imageUrl || `https://i.pravatar.cc/48?id=${post.attributes.author?.id}`,
+				slug: post.attributes.author?.data.attributes.slug
+			}
+		};
+	});
 }
 
 function getCatagories(categories) {
@@ -149,3 +157,5 @@ function getCatagories(categories) {
 		};
 	});
 }
+
+export const postsApi = new PostsApi();

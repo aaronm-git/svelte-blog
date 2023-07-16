@@ -3,8 +3,7 @@
 	import Posts from '$lib/components/Posts.svelte';
 
 	export let data;
-	let { posts } = data;
-	$: ({ posts } = data);
+	let { posts } = data.props;
 
 	const pinnedPosts = posts?.filter((post) => post.isPinned) || [];
 	const recentPosts = posts?.filter((post) => !post.isPinned).sort((a, b) => b.created_at - a.created_at) || [];

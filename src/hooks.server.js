@@ -8,7 +8,7 @@ export async function handle({ event, resolve }) {
 		supabaseKey,
 		event
 	});
-    
+
 	/**
 	 * A convenience helper so we can just call await getSession() instead const { data: { session } } = await supabase.auth.getSession()
 	 */
