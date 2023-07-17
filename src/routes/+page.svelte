@@ -6,7 +6,7 @@
 	let { posts } = data.props;
 
 	const pinnedPosts = posts?.filter((post) => post.isPinned) || [];
-	const recentPosts = posts?.filter((post) => !post.isPinned).sort((a, b) => b.created_at - a.created_at) || [];
+	const recentPosts = posts?.sort((a, b) => b.created_at - a.created_at) || [];
 </script>
 
 <div>
