@@ -4,6 +4,6 @@
 
 <style>
 	.content {
-		max-width: 1000px;
+		max-width: 1200px;
 	}
 </style>
