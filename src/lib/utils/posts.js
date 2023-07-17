@@ -9,7 +9,7 @@ class PostsApi {
 	}
 
 	async getPosts(page = 1, pageSize = 25) {
-		const posts = await this.#execFetch(`/api/posts?populate=*`);
+		const posts = await this.#execFetch(`/api/posts?populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true`);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
 	}
@@ -21,18 +21,9 @@ class PostsApi {
 		return this.#execFetch(`posts/${id}?populate=*`);
 	}
 
-	async getPostBySlug(slug) {
-		const posts = await this.#execFetch(`/api/posts?filters[slug][$eq]=${slug}&populate=*`);
-		if (!posts || posts.length === 0) {
-			return null;
-		}
-		const formattedPosts = formatPost(posts);
-		return formattedPosts[0];
-	}
-
 	async getPostByParams({ year, month, slug }) {
 		const query = `filters[slug][$eq]=${slug}`;
-		const posts = await this.#execFetch(`/api/posts?${query}&populate=*`);
+		const posts = await this.#execFetch(`/api/posts?${query}&populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true`);
 		if (!posts || posts.length === 0) {
 			return null;
 		}
@@ -46,7 +37,7 @@ class PostsApi {
 		}
 		const startISO = dayjs(`${year}-01-01`).toISOString();
 		const endISO = dayjs(`${Number(year) + 1}-01-01`).toISOString();
-		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -63,7 +54,7 @@ class PostsApi {
 		if (!year || !month) {
 			throw new Error('A year and month must be provided');
 		}
-		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -80,7 +71,7 @@ class PostsApi {
 		if (!year || !month || !slug) {
 			throw new Error('A year, month, and slug must be provided');
 		}
-		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&filters[slug][$eq]=${slug}&populate=*`;
+		const query = `/api/posts?filters[publishedAt][$gte]=${startISO}&filters[publishedAt][$lt]=${endISO}&filters[slug][$eq]=${slug}&populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts[0];
@@ -91,7 +82,7 @@ class PostsApi {
 			throw new Error('A category must be provided');
 		}
 		const categoryName = category.toLowerCase();
-		const query = `/api/posts?populate=*&filters[categories][slug][$eq]=${categoryName}`;
+		const query = `/api/posts?&populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true&filters[categories][slug][$eq]=${categoryName}`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -102,6 +93,16 @@ class PostsApi {
 			throw new Error('An author id must be provided');
 		}
 		const query = `/api/posts?populate=*&filters[author][id][$eq]=${authorId}`;
+		const posts = await this.#execFetch(query);
+		const formattedPosts = formatPost(posts);
+		return formattedPosts;
+	}
+
+	async getPostsByAuthorSlug(authorSlug) {
+		if (!authorSlug) {
+			throw new Error('An author slug must be provided');
+		}
+		const query = `/api/posts?populate[author][populate][0]=user&populate[author][populate][1]=image&populate[categories]=true&filters[author][slug][$eq]=${authorSlug}`;
 		const posts = await this.#execFetch(query);
 		const formattedPosts = formatPost(posts);
 		return formattedPosts;
@@ -137,10 +138,9 @@ function formatPost(posts) {
 			updatedAt: post.attributes.updatedAt,
 			publishedAt: post.attributes.publishedAt,
 			author: {
-				id: post.attributes.author?.data.id,
-				name: post.attributes.author?.data.attributes.firstname + ' ' + post.attributes.author?.data.attributes.lastname,
-				imageUrl: `https://i.pravatar.cc/48?id=${post.attributes.author?.data.id}`,
-				// imageUrl: post.attributes.author?.data.attributes?.imageUrl || `https://i.pravatar.cc/48?id=${post.attributes.author?.id}`,
+				id: post.attributes.author.data.attributes.user.data.id,
+				name: post.attributes.author.data.attributes.name,
+				imageUrl: baseUrl + post.attributes.author.data.attributes.image.data.attributes.url,
 				slug: post.attributes.author?.data.attributes.slug
 			}
 		};

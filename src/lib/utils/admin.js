@@ -1,5 +1,5 @@
 // import { STRAPI_KEY } from '$env/static/private';
-import { PUBLIC_STRAPI_URL as baseUrl } from '$env/static/public';
+import { PUBLIC_STRAPI_URL as baseUrl, PUBLIC_STRAPI_TOKEN } from '$env/static/public';
 import { STRAPI_ADMIN_EMAIL, STRAPI_ADMIN_PASSWORD } from '$env/static/private';
 import axios from 'axios';
 // const bearer = `Bearer ${STRAPI_KEY}`;
@@ -7,7 +7,8 @@ import axios from 'axios';
 class AdminApi {
 	constructor() {
 		this.baseUrl = baseUrl + '/admin';
-		this.token = null;
+		this.token = PUBLIC_STRAPI_TOKEN || null;
+
 	}
 
 	async getUserById(id) {
@@ -19,6 +20,14 @@ class AdminApi {
 			return null;
 		}
 		return result.data.data;
+	}
+
+	async getAllAuthors() {
+		const result = await this.#execFetch('/users');
+		if (!result) {
+			return null;
+		}
+		return result.data.data.results;
 	}
 
 	async #execFetch(path) {

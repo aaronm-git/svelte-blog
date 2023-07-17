@@ -11,7 +11,6 @@
 	export let text = '';
 	export let publishedAt = '';
 	export let previewText = '';
-
 	const sanitizeText = (text) => {
 		const converter = new showdown.Converter();
 		const html = converter.makeHtml(text);
@@ -29,7 +28,7 @@
 		<img alt="{author.name}'s avatar" class="post-avatar" src={author.imageUrl} width="48" height="48" />
 		<p class="post-meta">
 			Published on <time class="post-date" datetime={new Date(publishedAt)}>{new Date(publishedAt).toLocaleDateString()}</time>, by
-			<a href={`/authors/${author.id}`} class="post-author">{author.name}</a>
+			<a href={`/authors/${author.slug}`} class="post-author">{author.name}</a>
 			under
 
 			{#each categories as category}

@@ -1,16 +1,17 @@
 import { postsApi } from '$lib/utils/posts';
-import { adminApi } from '$lib/utils/admin';
+import { authorsApi } from '$lib/utils/authors';
 import { error } from '@sveltejs/kit';
 
-export async function load(context) {
-	const authorId = context.params.slug;
-	const author = await adminApi.getUserById(authorId);
-	if (!authorId || !author) {
+export async function load({ params: { slug } }) {
+	const author = await authorsApi.getAuthorBySlug(slug);
+	if (!author) {
 		throw error(404, {
 			code: 'NOT_FOUND'
 		});
 	}
-	const posts = await postsApi.getPostsByAuthorId(authorId);
+
+	const posts = await postsApi.getPostsByAuthorSlug(slug);
+
 	return {
 		props: {
 			posts
