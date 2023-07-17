@@ -7,7 +7,7 @@
 			<ul class="nav-list">
 				<li class="nav-item">
 					<a class="pure-button" href="/">Home</a>
-					<a class="pure-button" href="/login">Login</a>
+					<!-- <a class="pure-button" href="/login">Login</a> -->
 					<a class="pure-button" href="http://purecss.io" target="_blank">Pure</a>
 				</li>
 			</ul>
