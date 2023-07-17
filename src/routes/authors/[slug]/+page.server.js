@@ -4,7 +4,6 @@ import { error } from '@sveltejs/kit';
 
 export async function load({ params: { slug } }) {
 	const author = await authorsApi.getAuthorBySlug(slug);
-	console.log('author', author);
 	if (!author) {
 		throw error(404, {
 			code: 'NOT_FOUND'
