@@ -1,8 +1,8 @@
 <script>
 	import Posts from '$lib/components/Posts.svelte';
 	export let data;
-    let { posts } = data.props;
-	const authorName = "Posts by " + posts[0]?.author.name;
+	let { posts, name } = data.props;
+	const subhead = 'Posts by ' + name;
 </script>
 
-<Posts {posts} subhead={authorName} />
+<Posts {posts} {subhead} />
