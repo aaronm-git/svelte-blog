@@ -43,3 +43,34 @@
 		<a href="/posts/{year}/{month}/{slug}">Read more &gt;</a>
 	</div>
 </section>
+
+<style>
+	.post {
+		margin-top: 1rem;
+	}
+
+	.post-header {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.post-title {
+		flex: 1 0 50%; /* Each child takes 50% of the container width */
+		margin: 0;
+		font-size: x-large;
+	}
+
+	.post-meta {
+		flex-basis: 100%; /* Last child takes the whole width of the second row */
+	}
+
+	@media (max-width: 768px) {
+		.post-title {
+			font-size: large;
+		}
+
+		.post-meta {
+			margin: 0.5rem 0 0 0;
+		}
+	}
+</style>
