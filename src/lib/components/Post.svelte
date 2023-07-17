@@ -64,6 +64,9 @@
 		flex-basis: 100%; /* Last child takes the whole width of the second row */
 	}
 
+	p {
+		margin: .5rem 0 0;
+	}
 	@media (max-width: 768px) {
 		.post-title {
 			font-size: large;
