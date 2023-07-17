@@ -15,8 +15,8 @@ export async function load({ params: { slug } }) {
 
 	return {
 		props: {
-			posts: [],
-			name: author.attributes.name,
+			posts,
+			name: author.attributes.name
 		}
 	};
 }
